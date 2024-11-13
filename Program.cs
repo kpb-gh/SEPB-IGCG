@@ -37,7 +37,6 @@ namespace IngameScript
         public IMyCameraBlock ActivateCamera(string name)
         {
             var cam = GridTerminalSystem.GetBlockWithName(name) as IMyCameraBlock;
-            cam.EnableRaycast = true;
             return cam;
         }
 
@@ -72,6 +71,7 @@ namespace IngameScript
             { 
                 throw new ArgumentNullException($"{nameof(cam)} is null."); 
             }
+            cam.EnableRaycast = true;
             if (Scan(cam))
             {
                 Broadcast("LOCK", targetDirection);
