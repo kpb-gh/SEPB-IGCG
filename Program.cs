@@ -29,6 +29,7 @@ namespace IngameScript
         string BROADCAST_TAG = "IGCG"; // Listen code for antenna broadcast
         // CONFIG END
         Vector3D targetDirection = Vector3D.Zero;
+        Vector3D targetLocation = Vector3D.Zero;
         public Program()
         {
             Runtime.UpdateFrequency = UpdateFrequency.Update10;
@@ -50,8 +51,13 @@ namespace IngameScript
             { 
                 data = cam.Raycast(TARGET_RANGE); 
             }
-            targetDirection = data.HitPosition ?? Vector3D.Zero;
-            return targetDirection != Vector3D.Zero;
+            targetLocation = data.HitPosition ?? Vector3D.Zero;
+            return targetLocation != Vector3D.Zero;
+        }
+
+        public Vector3D CalculateDirection(Vector3D myPos, Vector3D targetPos)
+        {
+            throw new Exception("Not implemented."); 
         }
 
         public bool Broadcast(string message, Vector3D targetCoords)
@@ -74,7 +80,8 @@ namespace IngameScript
             cam.EnableRaycast = true;
             if (Scan(cam))
             {
-                Broadcast("LOCK", targetDirection);
+                targetDirection = CalculateDirection(cam.GetPosition(), targetLocation);
+                Broadcast("LOCK", targetLocation);
             } else
             {
                 Broadcast("NONE", Vector3D.Zero);
