@@ -36,12 +36,23 @@ namespace IngameScript
 
         public IMyCameraBlock ActivateCamera(string name)
         {
-            throw new Exception("Not implemented.");
+            var cam = GridTerminalSystem.GetBlockWithName(name) as IMyCameraBlock;
+            cam.EnableRaycast = true;
+            return cam;
         }
 
         public bool Scan(IMyCameraBlock cam)
         {
-            throw new Exception("Not implemented.");
+            MyDetectedEntityInfo data;
+            if (targetDirection != Vector3D.Zero)
+            {
+                data = cam.Raycast(TARGET_RANGE, targetDirection);
+            } else 
+            { 
+                data = cam.Raycast(TARGET_RANGE); 
+            }
+            targetDirection = data.HitPosition ?? Vector3D.Zero;
+            return targetDirection != Vector3D.Zero;
         }
 
         public bool Broadcast(string message, Vector3D targetCoords)
