@@ -23,6 +23,7 @@ namespace IngameScript
     partial class Program : MyGridProgram
     {
         // CONFIG START
+        bool ISTRACKER = true; // Whether this entity sends targetting data or not
         string CAMERA_NAME = "Cam_TGP"; // Name of camera to target with
         string ANTENNA_NAME = "Antenna"; // Name of antenna to broadcast with
         int TARGET_RANGE = 5000; // Maximum range at which a lock can be obtained
@@ -72,19 +73,25 @@ namespace IngameScript
 
         public void Main(string argument, UpdateType updateSource)
         {
-            var cam = ActivateCamera(CAMERA_NAME);
-            if (cam == null) 
-            { 
-                throw new ArgumentNullException($"{nameof(cam)} is null."); 
-            }
-            cam.EnableRaycast = true;
-            if (Scan(cam))
-            {
-                targetDirection = CalculateDirection(cam.GetPosition(), targetLocation);
-                Broadcast("LOCK", targetLocation);
+            if (ISTRACKER) { 
+                var cam = ActivateCamera(CAMERA_NAME);
+                if (cam == null)
+                {
+                    throw new ArgumentNullException($"{nameof(cam)} is null.");
+                }
+                cam.EnableRaycast = true;
+                if (Scan(cam))
+                {
+                    targetDirection = CalculateDirection(cam.GetPosition(), targetLocation);
+                    Broadcast("LOCK", targetLocation);
+                }
+                else
+                {
+                    Broadcast("NONE", Vector3D.Zero);
+                }
             } else
             {
-                Broadcast("NONE", Vector3D.Zero);
+                throw new Exception("Not implemented."); 
             }
         }
     }
