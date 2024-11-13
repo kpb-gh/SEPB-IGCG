@@ -22,7 +22,7 @@ namespace IngameScript
 {
     partial class Program : MyGridProgram
     {
-        // CONFIG START
+        // START PROGRAM; CONFIG START
         bool ISTRACKER = true; // Whether this entity sends targetting data or not
         string CAMERA_NAME = "Cam_TGP"; // Name of camera to target with
         string ANTENNA_NAME = "Antenna"; // Name of antenna to broadcast with
@@ -94,5 +94,6 @@ namespace IngameScript
                 throw new Exception("Not implemented."); 
             }
         }
+        // END PROGRAM
     }
 }
