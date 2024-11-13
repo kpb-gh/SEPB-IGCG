@@ -22,51 +22,52 @@ namespace IngameScript
 {
     partial class Program : MyGridProgram
     {
-        // This file contains your actual script.
-        //
-        // You can either keep all your code here, or you can create separate
-        // code files to make your program easier to navigate while coding.
-        //
-        // Go to:
-        // https://github.com/malware-dev/MDK-SE/wiki/Quick-Introduction-to-Space-Engineers-Ingame-Scripts
-        //
-        // to learn more about ingame scripts.
-
+        // CONFIG START
+        string CAMERA_NAME = "Cam_TGP"; // Name of camera to target with
+        string ANTENNA_NAME = "Antenna"; // Name of antenna to broadcast with
+        int TARGET_RANGE = 5000; // Maximum range at which a lock can be obtained
+        string BROADCAST_TAG = "IGCG"; // Listen code for antenna broadcast
+        // CONFIG END
+        Vector3D targetDirection = Vector3D.Zero;
         public Program()
         {
-            // The constructor, called only once every session and
-            // always before any other method is called. Use it to
-            // initialize your script. 
-            //     
-            // The constructor is optional and can be removed if not
-            // needed.
-            // 
-            // It's recommended to set Runtime.UpdateFrequency 
-            // here, which will allow your script to run itself without a 
-            // timer block.
+            Runtime.UpdateFrequency = UpdateFrequency.Update10;
+        }
+
+        public IMyCameraBlock ActivateCamera(string name)
+        {
+            throw new Exception("Not implemented.");
+        }
+
+        public bool Scan(IMyCameraBlock cam)
+        {
+            throw new Exception("Not implemented.");
+        }
+
+        public bool Broadcast(string message, Vector3D targetCoords)
+        {
+            throw new Exception("Not implemented."); 
         }
 
         public void Save()
         {
-            // Called when the program needs to save its state. Use
-            // this method to save your state to the Storage field
-            // or some other means. 
-            // 
-            // This method is optional and can be removed if not
-            // needed.
+            throw new Exception("Not implemented.");
         }
 
         public void Main(string argument, UpdateType updateSource)
         {
-            // The main entry point of the script, invoked every time
-            // one of the programmable block's Run actions are invoked,
-            // or the script updates itself. The updateSource argument
-            // describes where the update came from. Be aware that the
-            // updateSource is a  bitfield  and might contain more than 
-            // one update type.
-            // 
-            // The method itself is required, but the arguments above
-            // can be removed if not needed.
+            var cam = ActivateCamera(CAMERA_NAME);
+            if (cam == null) 
+            { 
+                throw new ArgumentNullException($"{nameof(cam)} is null."); 
+            }
+            if (Scan(cam))
+            {
+                Broadcast("LOCK", targetDirection);
+            } else
+            {
+                Broadcast("NONE", Vector3D.Zero);
+            }
         }
     }
 }
