@@ -62,7 +62,7 @@ namespace IngameScript
 
         public void Save()
         {
-            throw new Exception("Not implemented.");
+            Storage = targetDirection.ToString();
         }
 
         public void Main(string argument, UpdateType updateSource)
